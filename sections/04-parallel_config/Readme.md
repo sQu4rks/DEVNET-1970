@@ -1,5 +1,9 @@
 # Parallelized configuration pushing using pyATS and RQ
 
+[![Cover Demo 4](../../res/cover-4.png)](https://youtu.be/HPBP2iWe1GQ)
+
+<div align="center" ><i>Click the image to view the demo video</i></div>
+
 When pushing configuration changes to network devices a difference in scale can become a difference in kind. While a simple script that sequentially applies the config to a list of devices can be sufficient to push your desired change in a small topology, once you are dealing with hundred or thousands of devices speed becomes important. The easiest way to improve speed is to parallelize your code.
 
 By using a simple worker queue system we create a *job* for each of our devices. The *job* contains the information of which device we want to apply what configurtion to and what python code we want to use to do so. A job is put into the *queue* and there a *worker* can pick up the job, execute it, and move on to the next one. By having multiple *workers* we can massively speed up the deployment of changes without adding too much overhead. 

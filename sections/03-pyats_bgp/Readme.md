@@ -1,5 +1,9 @@
 # Verify BGP Neighbor status using pyATS
 
+[![Cover Demo 3](../../res/cover-3.png)](https://youtu.be/XUhweCS5F44)
+
+<div align="center" ><i>Click the image to view the demo video</i></div>
+
 A powerful concept in software engineering is automated testing. The idea here is to be able to programmatically verify that a software is working as intended. This is achieved by writing test cases where the outcome is known to the developer writing the test beforehand. This is the same concept we are going to be using in pyATS.
 
 Even though we have so far only looked at the other aspects of the framework, pyATS was initally developed to allow engineering teams inside Cisco to easily write tests for network devices, hence the name **py**thon **A**utomated **T**est **S**ystem. 
