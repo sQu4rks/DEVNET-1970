@@ -11,21 +11,21 @@ Welcome to the companion guide for our DEVNET-1970 session at Cisco Live 2022. I
 
 ## A word on the NetDevOps pipeline demo
 
-The fifth demo that showcased a NetDevOps pipeline is based on a previous session delivered for the Partner Interactive Webinar. You can find the lab guide for this demo [here](#todo). Please be aware that this is a more involved demo that will require some setup from your side.
+The fifth demo that showcased a NetDevOps pipeline is based on a previous session delivered for the Partner Interactive Webinar. You can find the lab guide for this demo [here](https://github.com/sQu4rks/netdevops-pipeline-lab/). Please be aware that this is a more involved demo that will require some setup from your side. You can find the demo video [here](https://youtu.be/-1-LyXTOUd8).
 
 ## A word on setup
 
-For these demos to work you'll need a working installation of pyATS. You may find instructions on how to install pyATS on different platforms [here](#todo). 
+For these demos to work you'll need a working installation of pyATS. You may find instructions on how to install pyATS on different platforms [here](https://pubhub.devnetcloud.com/media/pyats/docs/getting_started/index.html#installation). 
 
 For demo 1, 2 and 4 we provide a sample testbed that uses a Always-On Cisco DevNet sandbox device so there is no device setup required from you. 
 
-To run demo 4 on your own setup you'll need a (virtual) lab with a topology that runs BGP. If you have access to a CML instance (or reserve a CML sandbox [here](#todo)) you can follow the instructions in [this guide](#todo) to setup a basic BGP lab. This is the same lab we used in the demo.
+To run demo 4 on your own setup you'll need a (virtual) lab with a topology that runs BGP. If you have access to a CML instance (or reserve a CML sandbox [here](https://devnetsandbox.cisco.com)) you can follow the instructions in [this guide](https://jasonmurray.org/posts/2021/basicbgp/) to setup a basic BGP lab. This is the same lab we used in the demo.
 
 ## Acknowledgements
 
-* The config diff example is based on [this previous work](#todo) by [Hank Preston](#todo)
-* The BGP lab used in the demo is based on [this guide](#todo) by #todo
-* The BGP test itself is based on [this work](#todo) by #todo
+* The config diff example is based on [this repository](https://github.com/hpreston/genie-config-diff) by [Hank Preston](https://twitter.com/hfpreston)
+* The BGP lab used in the demo is based on [this guide](https://jasonmurray.org/posts/2021/basicbgp/) by [Jason Murray](https://twitter.com/0xJasonMurray/)
+* The BGP test itself is based on [this work](https://github.com/kecorbin/pyats-network-checks) by [Kevin Corbin](https://twitter.com/kecorbin)
 
 <div align="right">
    
