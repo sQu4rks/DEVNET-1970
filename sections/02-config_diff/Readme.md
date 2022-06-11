@@ -1,6 +1,8 @@
 # Configuration Diffs
 
-ToDo(mneiding): Insert demo video
+[![Cover Demo 2](../../res/cover-2.png)](https://youtu.be/2xc0VALO0uk)
+
+<div align="center" >*Click the image to view the demo video*</div>
 
 Since pyATS allows us to retrieve **structured** data from a device this makes it very easy to retrieve the *state* of a device and then, maybe after some changes or during an outage you are trying to troubleshoot, you can retrieve the *state* of your device again and compare the two to see what has changed. 
 

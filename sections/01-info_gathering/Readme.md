@@ -2,6 +2,8 @@
 
 [![Cover Demo 1](../../res/cover-1.png)](https://youtu.be/HQHQEX3Nddk)
 
+<div align="center" >*Click the image to view the demo video*</div>
+
 In this demo, we are retrieving information from a device. pyATS provides functionalities to connect to devices and then issue a command to the device as if you were typing them after connecting via SSH manually. A special feature of pyATS is it's *parsing* functionality. Instead of just returning you the textual output of a `show` command we get structured data (in the form of a python dictionary) back that we can then use going forward. 
 
 ## Step-by-step instructions
