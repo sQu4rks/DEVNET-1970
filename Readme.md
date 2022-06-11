@@ -1,3 +1,5 @@
+![Banner Session](res/banner.png)
+
 # Cisco Live 2022 - DEVNET-1970 Companion Guide
 
 Welcome to the companion guide for our DEVNET-1970 session at Cisco Live 2022. In this document we want to give you a bit more context around each of the demos shown during the delivery of the session as well as explain the source code or tools used for each of the demos in-depth. 
