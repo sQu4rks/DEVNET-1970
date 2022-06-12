@@ -4,7 +4,7 @@
 
 <div align="center" ><i>Click the image to view the demo video</i></div>
 
-In this demo, we are retrieving information from a device. pyATS provides functionalities to connect to devices and then issue a command to the device as if you were typing them after connecting via SSH manually. A special feature of pyATS is it's *parsing* functionality. Instead of just returning you the textual output of a `show` command we get structured data (in the form of a python dictionary) back that we can then use going forward. 
+In this demo, we are retrieving information from a device. pyATS provides functionalities to connect to devices and then issue a command to the device as if you were typing them after connecting via SSH manually. A special feature of pyATS is its *parsing* functionality. Instead of just returning you the textual output of a `show` command we get structured data (in the form of a python dictionary) back that we can then use going forward. 
 
 ## Step-by-step instructions
 
@@ -31,7 +31,7 @@ devices:
         ip: "sandbox-iosxe-latest-1.cisco.com"
         port: "22"
 ```
-2. Create another file called `facts.py`. This file is going to contain the logic of loading our previously created testbed file, connect to all devices in the testbed, issue the show version command and print back the device name as well as the version we rerieved. Your directory structure should now look like this:
+2. Create another file called `facts.py`. This file is going to contain the logic of loading our previously created testbed file, connect to all devices in the testbed, issue the 'show version' command and print back the device name as well as the version we retrieved. Your directory structure should now look like this:
 ```
 - 01_info_gathering
   |- testbed.yaml

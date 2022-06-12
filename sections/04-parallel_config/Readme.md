@@ -4,16 +4,16 @@
 
 <div align="center" ><i>Click the image to view the demo video</i></div>
 
-When pushing configuration changes to network devices a difference in scale can become a difference in kind. While a simple script that sequentially applies the config to a list of devices can be sufficient to push your desired change in a small topology, once you are dealing with hundred or thousands of devices speed becomes important. The easiest way to improve speed is to parallelize your code.
+When pushing configuration changes to network devices _a difference in scale can become a difference in kind_. While a simple script that sequentially applies the config to a list of devices can be sufficient to push your desired change in a small topology, once you are dealing with hundred or thousands of devices speed becomes important. The easiest way to improve speed is to parallelize your code.
 
 By using a simple worker queue system we create a *job* for each of our devices. The *job* contains the information of which device we want to apply what configurtion to and what python code we want to use to do so. A job is put into the *queue* and there a *worker* can pick up the job, execute it, and move on to the next one. By having multiple *workers* we can massively speed up the deployment of changes without adding too much overhead. 
 
-In this demo we'll be using *Redis Queues* or short *RQ* to build our queue system. As the name suggests, this is a queue system build on redis. 
+In this demo we'll be using *Redis Queues*, or short *RQ*, to build our queue system. As the name suggests, this is a queue system build on redis. 
 
-While this might sound like a big task we'll do the entire thing in around 30 lines of code. 
+While this might sound like a big task we will do the entire thing in around 30 lines of code. 
 
-1. For setup, we'll need a few things. We'll need redis installed. You can either [install redis locally](#todo) or [run it through docker](#todo). Once you have installed redis, start a redis server.
-2. Create a new folder called `04-parallel_config`. In it we'll need a `testbed.yaml` file again as well as two python files. `tasks.py` will contain our function definitions and `add_job.py` will be used to create the jobs. Your folder structure should now look like this:
+1. For setup we will need a few things, including getting redis installed. You can either [install redis locally](#todo) or [run it using docker](#todo). Once you have installed redis, start a redis server.
+2. Create a new folder called `04-parallel_config`. In it we will need a `testbed.yaml` file again, as well as two python files: `tasks.py` will contain our function definitions and `add_job.py` will be used to create the jobs. Your folder structure should now look like this:
 ```
 - 04_parallel_config
   |- testbed.yaml
@@ -43,7 +43,7 @@ devices:
         ip: "sandbox-iosxe-latest-1.cisco.com"
         port: "22"
 ```
-3. Next, open up the `tasks.py` file. Here we are going to define the jobs that can be queued and then executed by the workers. A *job* in RQ is simply a function. We'll need to import the testbed loading function from pyATS before we can get started defining our function/job.
+3. Next, open up the `tasks.py` file. Here we are going to define the jobs that can be queued and then executed by the workers. A *job* in RQ is simply a function. We will need to import the testbed loading function from pyATS before we can get started defining our function/job.
 ```python
 from genie.testbed import load
 ```
@@ -65,7 +65,7 @@ def apply_config(testbed, device, config):
    print("\n".join(config))
    dev.configure(config)
 ```
-7. That's it for our `tasks.py` file and all the code needed to apply a list of configuration commands to a device. Next, open the `add_job.py`. In here we are going to create our `Queue` object and enqueue a job and create the list of commands we want to send to each device in the testbed file. 
+7. That's it for our `tasks.py` file and all the code needed to apply a list of configuration commands to a device. Next, open the `add_job.py`. In here we are going to create our `Queue` object, enqueue a job and create the list of commands we want to send to each device in the testbed file. 
 ```python
 from rq import Queue
 from genie.testbed import load
@@ -84,15 +84,15 @@ tb = load('testbed.yaml')
 ```python
 q = Queue(connection=Redis())
 ```
-10. Now we can loop over all the devices in our testbed, check that the type of the device is `router`, and then create a new job on the queue. 
+10. Now we can loop over all the devices in our testbed, check the device type is `router`, and then create a new job on the queue. 
 ```python
 for name, dev in tb.devices.items():
    if dev.type == "router":
       q.enqueue(apply_config, testbed='testbed.yaml', device=name, config=config)
 ```
-11. With our coding done, open another terminal window in the `04-parallel_config` folder. We'll now start a rq worker that will be able to pick up any jobs coming into the queue. Note that, by not specifying a queue name in the previous job, all jobs will be put on the `default` queue. The command below will start a new worker.
+11. With our coding done, open another terminal window in the `04-parallel_config` folder. We will now start a rq worker that will be able to pick up any jobs coming into the queue. Please note that by not specifying a queue name in the previous job, all jobs will be put on the `default` queue. The command below will start a new worker.
 ```
-$ rq worker defaul
+$ rq worker default
 ```
 12. In the other terminal, run the `add_job.py` file to queue the jobs.
 ```

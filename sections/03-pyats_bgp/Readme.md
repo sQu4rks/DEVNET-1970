@@ -4,22 +4,22 @@
 
 <div align="center" ><i>Click the image to view the demo video</i></div>
 
-A powerful concept in software engineering is automated testing. The idea here is to be able to programmatically verify that a software is working as intended. This is achieved by writing test cases where the outcome is known to the developer writing the test beforehand. This is the same concept we are going to be using in pyATS.
+A powerful concept in software engineering is _automated testing_. The idea here is to be able to programmatically verify that a software is working as intended. This is achieved by writing test cases where the outcome is known to the developer writing the test beforehand. This is the same concept we are going to be using in pyATS.
 
-Even though we have so far only looked at the other aspects of the framework, pyATS was initally developed to allow engineering teams inside Cisco to easily write tests for network devices, hence the name **py**thon **A**utomated **T**est **S**ystem. 
+Even though we have so far only looked at the other aspects of the framework, pyATS was initally developed to allow engineering teams inside Cisco to easily write tests for network devices, hence the name **py**thon **A**utomated **T**est **S**ystem, or **pyATS**. 
 
-By leveraging the parsing and learning functionality we have already seen in previous examples we can codify our verification and troubleshooting workflows. Think about the checks you do manually either after a config change or when you are troubleshooting a problem - these are perfect candidates for checks that should/could be codified. 
+By leveraging the parsing and learning functionality we have already seen in previous examples, we can codify our verification and troubleshooting workflows. Think about the checks you do manually either after a config change or when you are troubleshooting a problem - these are perfect candidates for checks that should/could be codified. 
 
-In this example we are looking at a test case that verifies that BGP neighbors are established. We do this by connecting to all our devices in the testbed file, learn the BGP feature for each of these devices, and then verify that all peers are established. 
+In this example we are looking at a test case that verifies BGP neighbors are correctly established. We do this by connecting to all our devices in the testbed file, learn the BGP feature for each of these devices, and then verify  all peers are established. 
 
-1. Create a new folder called `03-pyats_bgp`. In it we'll need three different files. A `testbed.yaml` file, a `BGP_Neighbors_Established.py` file in which we'll define our test case and a file called `bgp_check_job.py` that will be used to run our test case. Since this demo requires BGP to be properly configured we can't provide you with a `testbed.yaml` file since BGP is not configured on the always-on sandbox devices. You can get a CML environment from the [DevNet Sandboxes](https://devnetsandbox.cisco.com). You can then either setup a BGP lab yourself or follow [this guide](https://jasonmurray.org/posts/2021/basicbgp/) by [Jason Murray](https://twitter.com/0xJasonMurray/). The lab used in the demo shown at Cisco Live was based on the architecture in that guide. Once you have setup your folder structure it should look like this:
+1. Create a new folder called `03-pyats_bgp`. We will need three different files in it. A `testbed.yaml` file, a `BGP_Neighbors_Established.py` file in which we will define our test case and a file called `bgp_check_job.py` that will be used to run our test case. Since this demo requires BGP to be properly configured we can't provide you with a `testbed.yaml` file since BGP is not configured on the always-on sandbox devices. You can get a CML environment from the [DevNet Sandboxes](https://devnetsandbox.cisco.com). You can then either setup a BGP lab yourself or follow [this guide](https://jasonmurray.org/posts/2021/basicbgp/) by [Jason Murray](https://twitter.com/0xJasonMurray/). The lab used in the demo shown at Cisco Live was based on the architecture in that guide. Once you have setup your folder structure it should look like this:
 ```
 - 03-pyats_bgp
   |- testbed.yaml
   |- BGP_Neighbors_Established.py
   |- bgp_check_job.py
 ``` 
-2. We'll start by writing our test case so open up the `BGP_Neighbors_Established.py` file. We'll start by importing a few necessary modules at the top of our file. You might have to install the `tabulate` package by running `pip3 install tabulate`.
+2. We will start by writing our test case so open up the `BGP_Neighbors_Established.py` file. Let's first import a few necessary modules at the top of our file. You might have to install the `tabulate` package by running `pip3 install tabulate`.
 ```python
 import logging
 import json
@@ -35,9 +35,9 @@ from genie.abstract import Lookup
 from genie.libs import ops # noqa
 ```
 
-Before diving fully into writing the test let's have a look how a pyATS test case looks like in general. 
+Before diving fully into writing the test let's have a look at how a pyATS test case looks like in general. 
 
-pyATS uses it's generalized testing framework called `AEtest` (short for **A**utomated **E**asy **test**ing) to describe automated tests. A test will usually contain at least three components:
+pyATS uses a generalized testing framework called `AEtest` (short for **A**utomated **E**asy **test**ing) to describe automated tests. A test will usually contain at least three components:
 
 * One *CommonSetup* that will be run once before all the test cases. As the name suggests this part is for carrying out setup tasks such as connecting to your devices, load a base configuration or verify a device state prior to testing. 
 * One or more *TestCase(s)*. These are your actual tests that verify functionality. TestCases either `PASS` or `FAIL`.
@@ -47,7 +47,7 @@ pyATS uses it's generalized testing framework called `AEtest` (short for **A**ut
 ```python
 class common_setup(aetest.CommonSetup):
 ```
-4. Inside the `common_setup` class we now create a function called `connect()`. Using the `aetest.subsection` decorator we denote this function to be a subsection of our *CommonSetup* task. Inside of this function we'll now connect to all our devices in the testbed and store a list of all device objects for later usage during our tests. We only connect to devices that start with `csr1000v` in this example because all our routers in the lab do start with that name. Notice how we store the list of devices (`device_list` variable) as a parameter in the parent for usage later on in our test cases.
+4. Inside the `common_setup` class we now create a function called `connect()`. Using the `aetest.subsection` decorator we denote this function to be a subsection of our *CommonSetup* task. Inside of this function we will now connect to all our devices in the testbed and store a list of all device objects for later usage during our tests. We only connect to devices that start with `csr1000v` in this example because all our routers in the lab do start with that name. Notice how we store the list of devices (`device_list` variable) as a parameter in the parent for usage later on in our test cases.
 ```python
     @aetest.subsection
     def connect(self, testbed):
@@ -72,7 +72,7 @@ class common_setup(aetest.CommonSetup):
 ```python
 class BGP_Neighbors_Established(aetest.Testcase):
 ```
-6. Within our `Testcase` class, we can designate a function as a test by using the `aetest.test` decorator. All functions that have been decorated as such will be run in sequential order. This allows us to split the functionality into multiple functions and make the code easier to handle. In our demo we'll have two such functions, `learn_bgp` which will learn the `bgp` feature from all our devices and `check_bgp` that will verify that the neighbors are established and present the results in a nicely formatted fashion. Let's start with the learning of our bgp feature. We iterate over all of our previously connected device objects and then learn the bgp feature for each of them and store the information from usage in the `check_bgp` section.
+6. Within our `Testcase` class, we can designate a function as a test by using the `aetest.test` decorator. All functions that have been decorated as such will be run in sequential order. This allows us to split the functionality into multiple functions and make the code easier to handle. In our demo we will have two such functions, `learn_bgp` which will learn the `bgp` feature from all our devices and `check_bgp` that will verify that the neighbors are established and present the results in a nicely formatted fashion. Let's start with the learning of our bgp feature. We iterate over all of our previously connected device objects, learn the bgp feature for each of them and then store the information from usage in the `check_bgp` section.
 ```python
    @aetest.test
    def learn_bgp(self):
@@ -85,7 +85,7 @@ class BGP_Neighbors_Established(aetest.Testcase):
             bgp.learn()
             self.all_bgp_sessions[dev.name] = bgp.info
 ```
-7. With our bgp feature information extracted and stored we can then check that the neighbors are established in our `check_bgp` test. Here we iterate over all the previously saved bgp sessions, extract the neighbors and check the state for each of those neighbors. In order to make the results easier to digest by a human we compile all of these information into a table. If any of the neighbors is *not* in `established` state, we fail the test case and print the information on the offending configuration as well as the connection table compiled before.
+7. With our bgp feature information extracted and stored we can then check that neighbors are established in our `check_bgp` test. Here we iterate over all the previously saved bgp sessions, extract the neighbors and check the state for each of those neighbors. In order to make the results easier to digest by a human we compile all this information into a table. If any of the neighbors is *not* in `established` state, we fail the test case and print the information on the offending configuration as well as the connection table compiled before.
 ```python
     @ aetest.test
     def check_bgp(self):

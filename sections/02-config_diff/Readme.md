@@ -34,16 +34,16 @@ devices:
 - 02-config_diff
   |- testbed.yaml
 ```
-3. Make sure that you are inside of the `02-config_diff` folder. We'll now instruct pyats to learn the `config` feature of all the devices in the testbed we specify using the `--testbed-file` option. The output is then saved into a folder called `old`.
+3. Make sure that you are inside of the `02-config_diff` folder. We will now instruct pyATS to learn the `config` feature of all the devices in the testbed we specify using the `--testbed-file` option. The output is then saved into a folder called `old`.
 ```
 $ genie learn config --testbed-file testbed.yaml --output old
 ```
 
-Let's pause here for a second and explain what a *feature* is. In pyATS, a devices functionality is modled into a set of *features*. An example for a *feature* is our config which captures the entire devices current running configuration but if you have a routing protocol like OSPF or BGP configured on your device, these are *features* that could be learned as well(`genie learn bgp --testbed-file testbed.yaml --output bgp_only` - This won't work on the sandbox since BGP is not configured there). 
+Let's pause here for a second and explain what a *feature* is. In pyATS, a device's functionality is modeled into a set of *features*. An example of a *feature* is our config, which captures the entire device's current running configuration. But if you have a routing protocol like OSPF or BGP configured on your device, these are *features* that could be learned as well (`genie learn bgp --testbed-file testbed.yaml --output bgp_only` - This won't work on the sandbox since BGP is not configured there). 
 
-When we instruct pyATS to *learn* a feature,your devices BGP configuration for example, pyATS will issue a set of commands to the device and retrieve all information of your BGP configuration. These information are then summarized into a computer-readble structured data file. 
+When we instruct pyATS to *learn* a feature, your device's BGP configuration for example, pyATS will issue a set of commands to the device and retrieve all information of your BGP configuration. This information is then summarized into a computer-readable structured data file. 
 
-Let's have a look at each of the files that has been created. After running the command in step 3, your folder should have the following structure:
+Let's have a look at each of the files that have been created. After running the command in step 3, your folder should have the following structure:
 
 ```
 - 02-config_diff
@@ -53,7 +53,7 @@ Let's have a look at each of the files that has been created. After running the 
      |- config_iosxe_csr1000v-1_ops.txt
      |- connection_csr1000v-1.txt
 ```
-The `connection_csr1000v-1.txt` file contains the connection log from pyATS. `config_iosxe_csr1000v-1_console.txt` contains the raw text of the commands that have been issued. Here you can see all the commands (in case of this example only the `show running-config` command) and their output that were parsed for this feature. Finally, `config_iosxe_csr1000v-1_ops.txt` is a json-dump of the dictionary containing all the information parsed from the `show running-config` command. 
+The `connection_csr1000v-1.txt` file contains the connection log from pyATS. `config_iosxe_csr1000v-1_console.txt` contains the raw text of the commands that have been issued. Here you can see all the commands (for this example only the `show running-config` command) and their output that was parsed for this feature. Finally, `config_iosxe_csr1000v-1_ops.txt` is a json-dump of the dictionary containing all the information parsed from the `show running-config` command. 
 
 4. Now in order to see a difference between the two snapshots we'll have to make some changes to the device. The changes you do are up to you. For this example we will change the interface status as well as the description of our `GigabitEthernet 2` interface. SSH into the device, go into enable and then config mode and change the interface configuration before exiting. The username is `developer` and the password is `C1sco12345`.
 
@@ -67,7 +67,7 @@ csr1000v-1(config-if)# shutdown
 csr1000v-1(config-if)# exit
 csr1000v-1(config)# exit
 ```
-5. With our changes done, disconnect from the device and come back to the terminal on your computer. We can now take another snapshot of the device configuration. The command is the same as in step 3 with the only difference beeing the output directory. 
+5. With our changes done, disconnect from the device and come back to the terminal on your computer. We can now take another snapshot of the device configuration. The command is the same as in step 3 with the only difference being the output directory. 
 ```
 $ genie learn config --testbed-file testbed.yaml --output new
 ```
